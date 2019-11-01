@@ -1,0 +1,15 @@
+<h1>Recipe ingredients</h1>
+
+
+<ul>
+{% for recipe in recipes %}
+    
+    <li>{{recipe.title}}</li>
+   <li><a href="/authorview/{{recipe.author.id}}/"> {{recipe.author}} </a></li>
+    <li>{{recipe.description}}</li>
+    <li>{{recipe.timerequired}} minutes</li>
+    <li>{{recipe.instructions}}</li>
+{% endfor %}
+</ul>
+
+{% comment %} <a href="/authorview/{{i.author.id}}/"> <li>{{ i.author.name }}</li> </a> {% endcomment %}

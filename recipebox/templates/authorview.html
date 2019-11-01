@@ -1,0 +1,12 @@
+<h1>Author</h1>
+<ul>
+{% for a in author %}
+   <li>Name: {{ a.name }} </li>
+    <li>Bio: {{ a.biosection }} </li>
+{% endfor %}
+</ul>
+<ul>
+{% for ar in author_recipe  %}
+   <li> Recipes: <a href="/detail/{{ar.id}}/">{{ ar.title }} </a> </li>
+{% endfor %}
+</ul>

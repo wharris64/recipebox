@@ -1,0 +1,12 @@
+<h1> Recipes!</h1>
+
+
+ <ul>
+    {% for i in data %}
+       <a href="/detail/{{i.id}}/"> <li>{{ i.title }}</li> </a>       
+        {% comment %} <ul>
+            <li>{{ i.description }}</li>
+        </ul> {% endcomment %}
+    {% endfor %}
+
+ </ul>
