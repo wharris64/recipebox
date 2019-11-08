@@ -1,6 +1,6 @@
 <h1> Recipes!</h1>
 
-
+<body>
  <ul>
     {% for i in data %}
        <a href="/detail/{{i.id}}/"> <li>{{ i.title }}</li> </a>       
@@ -10,3 +10,6 @@
     {% endfor %}
 
  </ul>
+ < a href = "authoradd/"> Add a new Author </a>
+ < a href = "recipeadd/"> Add a new Recipe </a>
+ </body>
