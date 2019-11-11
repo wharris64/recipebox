@@ -20,19 +20,38 @@ def authorview(request, id):
     return render(request, html, { 'author' : author ,  'author_recipe' : author_recipe })
 
 def recipe_add(request):
-    html = recipe_add.html
-    form = RecipeAdd
+    html = "recipe_add.html"
+    form = None
     if request.method == "POST":
-        pass
+        form = RecipeAdd(request.POST)
+
+        if form.is_valid():
+            data= form.cleaned_data
+            Recipe.objects.create(
+                title=data['title'],
+                author=Author.objects.filter(id=data['author']).first(),
+                description=data['desription'],
+                timerequired=data['timerequired'],
+                instructions=data['instructions']
+            )
+            return render(request, "thanks.html")
     else:
         form = RecipeAdd()
     return render(request, html, {"form": form})
 
 def author_add(request): 
-    html = author_add.html
-    form = AuthorAdd
+    html = "author_add.html"
+    form = None
     if request.method =="POST":
-        pass
+        form = AuthorAdd(request.POST)
+        
+        if form.is_valid():
+            data = form.cleaned_data
+
+            Author.objects.create(
+                name=data['name']
+            )
+        return render(request, "thanks.html")
     else:
         form = AuthorAdd()
     return render(request, html, {"form": form})
