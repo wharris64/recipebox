@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from recipebox.models import Author
 from recipebox.models import Recipe 
 # model form need below
-class RecipeAdd(ModelForm):
+class RecipeAdd(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = ['title', 'author', 'description', 'timerequired', 'instructions']

@@ -29,8 +29,8 @@ def recipe_add(request):
             data= form.cleaned_data
             Recipe.objects.create(
                 title=data['title'],
-                author=Author.objects.filter(id=data['author']).first(),
-                description=data['desription'],
+                author=data['author'],
+                description=data['description'],
                 timerequired=data['timerequired'],
                 instructions=data['instructions']
             )
@@ -43,6 +43,7 @@ def author_add(request):
     html = "author_add.html"
     form = None
     if request.method =="POST":
+        
         form = AuthorAdd(request.POST)
         
         if form.is_valid():
