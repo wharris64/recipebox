@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
+from django.contrib.auth.models import User
 from recipebox.models import Recipe, Author
-from recipebox.forms import RecipeAdd, AuthorAdd
-
+from recipebox.forms import RecipeAdd, AuthorAdd, LoginUser, CreateUser
+from django.contrib.auth.decorators import login_required
 def index(request):
     html = "index.html"
     recipe = Recipe.objects.all()
@@ -19,6 +19,8 @@ def authorview(request, id):
     author_recipe = Recipe.objects.filter(author=id)
     return render(request, html, { 'author' : author ,  'author_recipe' : author_recipe })
 
+
+@login_required
 def recipe_add(request):
     html = "recipe_add.html"
     form = None
@@ -39,6 +41,8 @@ def recipe_add(request):
         form = RecipeAdd()
     return render(request, html, {"form": form})
 
+
+@login_required
 def author_add(request): 
     html = "author_add.html"
     form = None
@@ -49,10 +53,26 @@ def author_add(request):
         if form.is_valid():
             data = form.cleaned_data
 
-            Author.objects.create(
-                name=data['name']
+            usermake =  User.objects.create(
+                username=data['username'],
+                password=data['password']
             )
+            Author.objects.create(
+                name=data['name'],
+                user=usermake
+            )
+            
         return render(request, "thanks.html")
     else:
         form = AuthorAdd()
     return render(request, html, {"form": form})
+
+
+
+
+def login_view(request):
+    html = "user_login.html"
+    form = LoginUser(request.get)
+    
+    if request.method == "POST":
+        form = LoginUser(request.post)
