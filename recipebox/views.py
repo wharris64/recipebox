@@ -1,8 +1,13 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, HttpResponse
+
 from recipebox.models import Recipe, Author
 from recipebox.forms import RecipeAdd, AuthorAdd, LoginUser, CreateUser
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+
+
+
 def index(request):
     html = "index.html"
     recipe = Recipe.objects.all()
@@ -42,37 +47,49 @@ def recipe_add(request):
     return render(request, html, {"form": form})
 
 
-@login_required
+
 def author_add(request): 
     html = "author_add.html"
     form = None
-    if request.method =="POST":
-        
-        form = AuthorAdd(request.POST)
-        
-        if form.is_valid():
-            data = form.cleaned_data
-
-            usermake =  User.objects.create(
-                username=data['username'],
-                password=data['password']
-            )
-            Author.objects.create(
-                name=data['name'],
-                user=usermake
-            )
+    if request.user.is_staff:
+        if request.method =="POST":
             
-        return render(request, "thanks.html")
+            form = AuthorAdd(request.POST)
+            
+            if form.is_valid():
+                data = form.cleaned_data
+
+                usermake =  User.objects.create(
+                    username=data['username'],
+                    password=data['password']
+                )
+                Author.objects.create(
+                    name=data['name'],
+                    user=usermake
+                )
+                
+            return render(request, "thanks.html")
+        else:
+            form = AuthorAdd()
     else:
-        form = AuthorAdd()
+        return HttpResponse("Sorry bud, can't even do it!")
     return render(request, html, {"form": form})
+    
 
-
-
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 
 def login_view(request):
     html = "user_login.html"
-    form = LoginUser(request.get)
-    
+    form = LoginUser()
     if request.method == "POST":
-        form = LoginUser(request.post)
+        form = LoginUser(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = authenticate(username=data["username"], password=data["password"])
+            if user:
+                login(request, user)
+            return redirect(request.GET.get("next", '/'))
+    return render(request, html, {"form": form})
+
