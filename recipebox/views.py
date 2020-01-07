@@ -41,13 +41,13 @@ def recipe_add(request):
                 timerequired=data['timerequired'],
                 instructions=data['instructions']
             )
-            return render(request, "thanks.html")
+            return redirect("/")
     else:
         form = RecipeAdd()
     return render(request, html, {"form": form})
 
 
-
+@login_required
 def author_add(request): 
     html = "author_add.html"
     form = None
@@ -78,7 +78,8 @@ def author_add(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('/')
+    html = "index.html"
+    return render(request, html)
 
 def login_view(request):
     html = "user_login.html"
@@ -90,6 +91,6 @@ def login_view(request):
             user = authenticate(username=data["username"], password=data["password"])
             if user:
                 login(request, user)
-            return redirect(request.GET.get("next", '/'))
+            return redirect(request.GET.get("next",'/'))
     return render(request, html, {"form": form})
 
