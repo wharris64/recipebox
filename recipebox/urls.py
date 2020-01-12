@@ -1,34 +1,20 @@
-
-"""recipebox URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from recipebox import models
 from django.contrib import admin
 from django.urls import path
-from recipebox import views
+from .views import *
 
 admin.site.register(models.Author)
 admin.site.register(models.Recipe)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
-    path('detail/<int:id>/', views.detail),
-    path('authorview/<int:id>/', views.authorview),
-    path('authoradd/', views.author_add),
-    path("recipeadd/", views.recipe_add),
-    path("login/",views.login_view),
-    path("logout/", views.logout_view)
+    path('', index),
+    path('detail/<int:id>/', detail),
+    path('authorview/<int:id>/', authorview),
+    path('authoradd/', author_add),
+    path("recipeadd/", recipe_add),
+    path("login/", login_view),
+    path("logout/", logout_view),
+    path('editrecipe/<int:id>/', recipe_edit_view),
+    path('favorite/<int:recipeId>/<int:authorId>', favorite)
 ]

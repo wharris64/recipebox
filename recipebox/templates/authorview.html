@@ -1,12 +1,21 @@
 <h1>Author</h1>
 <ul>
-{% for a in author %}
-   <li>Name: {{ a.name }} </li>
-    <li>Bio: {{ a.biosection }} </li>
-{% endfor %}
+
+<li>Name: {{ author.name }} </li>
+<li>Bio: {{ author.biosection }} </li>
+
 </ul>
 <ul>
 {% for ar in author_recipe  %}
    <li> Recipes: <a href="/detail/{{ar.id}}/">{{ ar.title }} </a> </li>
+    {% if user.is_authenticated %}
+        <a href='/favorite/{{ar.pk}}/{{user.pk}}'> Add to Favorites </a>
+    {% endif %}
+{% endfor %}
+<br>
+
+<h1>Favorites</h1>
+{% for recipe in favorites %}
+    <li> Recipes: <a href="/detail/{{recipe.id}}/">{{ recipe.title }} </a> </li>
 {% endfor %}
 </ul>

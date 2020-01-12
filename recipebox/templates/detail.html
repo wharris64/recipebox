@@ -9,6 +9,11 @@
     <li>{{recipe.description}}</li>
     <li>{{recipe.timerequired}} minutes</li>
     <li>{{recipe.instructions}}</li>
+    <li><a href = "/editrecipe/{{ recipe.pk }}/"> <button>Edit this recipe</button></a></li>
+
+    {% if user.is_authenticated %}
+        <a href='/favorite/{{ recipe.pk }}/{{user.pk}}'> Add to Favorites </a>
+    {% endif %}
 {% endfor %}
 </ul>
 
